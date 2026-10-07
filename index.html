@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anthony Mendez — Software Engineer</title>
+<meta name="description" content="Anthony Mendez — product-focused software engineer and generalist. Founding engineer, payments at Capital One, agentic AI workflows.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231a2225'/><text x='16' y='22' font-family='monospace' font-size='16' font-weight='700' text-anchor='middle' fill='%23f0783c'>&gt;_</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #1a2225;          /* editor slate */
+    --ink: #d7d3c8;         /* body text */
+    --dim: #6f7c80;         /* comments, gutters */
+    --orange: #f0783c;      /* keywords */
+    --gold: #e5c07b;        /* strings / numbers */
+    --teal: #2f8f87;        /* status bar */
+    --line: rgba(215, 211, 200, 0.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font: 400 15px/1.85 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+    -webkit-font-smoothing: antialiased;
+    font-variant-ligatures: contextual;
+  }
+  ::selection { background: var(--orange); color: var(--bg); }
+
+  /* scroll progress, a hairline at the top */
+  #progress {
+    position: fixed; top: 0; left: 0; height: 2px; width: 100%;
+    background: var(--orange); transform-origin: 0 50%; transform: scaleX(0);
+    z-index: 10; pointer-events: none;
+  }
+
+  main {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 18vh 24px 22vh;
+  }
+
+  /* ---------- hero ---------- */
+  .hero-kicker { color: var(--dim); }
+  h1 {
+    font-size: clamp(34px, 7vw, 56px);
+    line-height: 1.1;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin: 14px 0 22px;
+    color: var(--ink);
+  }
+  h1 .kw { color: var(--orange); font-weight: 500; }
+  .cursor {
+    display: inline-block; width: 0.55em; height: 0.95em;
+    background: var(--gold); vertical-align: -0.1em; margin-left: 4px;
+    animation: blink 1.1s steps(1) infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .lede { font-size: 17px; max-width: 62ch; color: var(--ink); }
+  .meta { margin-top: 22px; color: var(--dim); font-size: 13px; }
+  .meta span::before { content: '· '; color: var(--orange); }
+  .meta span:first-child::before { content: ''; }
+
+  /* ---------- sections ---------- */
+  section { margin-top: 15vh; }
+  .label {
+    color: var(--dim);
+    font-size: 13px;
+    margin-bottom: 26px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .label b { color: var(--orange); font-weight: 500; }
+  .label::after {
+    content: ''; flex: 1; height: 1px; background: var(--line);
+    transform-origin: left; transform: scaleX(0); transition: transform 1.2s cubic-bezier(.2,.7,.2,1) .2s;
+  }
+  .in .label::after, .label.in::after { transform: scaleX(1); }
+
+  p + p { margin-top: 1.1em; }
+  .num { color: var(--gold); font-weight: 500; }
+  strong { color: var(--gold); font-weight: 500; }
+  em { font-style: normal; color: var(--orange); }
+
+  /* ---------- roles ---------- */
+  .role { margin-bottom: 72px; position: relative; padding-left: 22px; }
+  .role::before {
+    content: ''; position: absolute; left: 0; top: 8px; bottom: 6px; width: 1px;
+    background: var(--line);
+  }
+  .role::after {
+    content: ''; position: absolute; left: 0; top: 8px; width: 1px; height: 0;
+    background: var(--orange); transition: height 1.1s cubic-bezier(.2,.7,.2,1);
+  }
+  .role.in::after { height: calc(100% - 14px); }
+  .role-head { display: flex; flex-wrap: wrap; gap: 2px 14px; align-items: baseline; }
+  .role h2 { font-size: 18px; font-weight: 700; letter-spacing: -0.01em; }
+  .role h2 .at { color: var(--orange); font-weight: 400; }
+  .when { color: var(--dim); font-size: 13px; }
+  .stack { color: var(--dim); font-size: 13px; margin-top: 14px; }
+  .stack i { font-style: normal; color: var(--ink); transition: color .2s; }
+  .stack i:hover { color: var(--gold); }
+  .takeaway {
+    margin-top: 18px; color: var(--dim); font-size: 14px;
+  }
+  .takeaway::before { content: '// takeaway  '; color: var(--teal); }
+  .takeaway span { color: var(--ink); }
+
+  /* ---------- code block for stack ---------- */
+  pre {
+    font: inherit; font-size: 14px; line-height: 1.9;
+    white-space: pre-wrap; overflow-x: auto;
+    color: var(--ink);
+  }
+  pre .k { color: var(--orange); }
+  pre .s { color: var(--gold); }
+  pre .p { color: var(--dim); }
+  pre .f { color: var(--teal); filter: brightness(1.35); }
+  pre .row { display: block; opacity: 0; transform: translateX(-6px); transition: opacity .5s, transform .5s; }
+  pre.in .row { opacity: 1; transform: none; }
+
+  /* ---------- links ---------- */
+  a {
+    color: var(--gold); text-decoration: none;
+    background: linear-gradient(var(--orange), var(--orange)) 0 100% / 0 1px no-repeat;
+    transition: background-size .3s ease, color .2s;
+    padding-bottom: 2px;
+  }
+  a:hover, a:focus-visible { background-size: 100% 1px; color: var(--orange); outline: none; }
+  .contact { font-size: 16px; line-height: 2.2; }
+  .contact .k { color: var(--orange); }
+  .contact .p { color: var(--dim); }
+
+  /* ---------- reveal ---------- */
+  .rv { opacity: 0; transform: translateY(14px); transition: opacity .9s cubic-bezier(.2,.7,.2,1), transform .9s cubic-bezier(.2,.7,.2,1); }
+  .rv.in { opacity: 1; transform: none; }
+
+  /* status-line easter egg: tiny, bottom-left, not a footer */
+  #status {
+    position: fixed; right: 14px; bottom: 12px; font-size: 11px; color: var(--dim);
+    background: var(--bg); padding: 2px 8px; border: 1px solid var(--line); border-radius: 3px;
+    opacity: .85; pointer-events: none; font-variant-numeric: tabular-nums;
+  }
+  #status b { color: var(--teal); font-weight: 500; filter: brightness(1.35); }
+
+  @media (max-width: 560px) {
+    body { font-size: 14px; }
+    main { padding-top: 12vh; }
+    .role { padding-left: 16px; }
+    #status { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .rv, pre .row { opacity: 1; transform: none; }
+    .label::after { transform: none; }
+    .role::after { height: calc(100% - 14px); }
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<main>
+
+  <!-- hero -->
+  <div class="rv">
+    <p class="hero-kicker">// hello, world. i'm</p>
+    <h1><span id="name" data-text="Anthony Mendez">Anthony Mendez</span><span class="cursor"></span></h1>
+    <p class="lede">
+      A product-focused software engineer and generalist. I've steered technical direction as the
+      <em>founding engineer</em> of an early-stage startup, and built payment systems that move
+      <span class="num">~$10M a month</span> inside one of the largest banks in the country.
+      Today I pair that rigor with agentic AI workflows to read, refactor and ship code faster,
+      without loosening the test bar.
+    </p>
+    <p class="meta">
+      <span>New York City</span><span>US citizen</span><span>on-site or remote</span><span>available immediately</span>
+    </p>
+  </div>
+
+  <!-- work -->
+  <section>
+    <div class="label rv"><span><b>01</b> /* where i've shipped */</span></div>
+
+    <article class="role rv">
+      <div class="role-head">
+        <h2>Founding Engineer <span class="at">@</span> Lord of Savings</h2>
+        <span class="when">apr 2024 → now</span>
+      </div>
+      <p style="margin-top:14px">
+        Took the product from <span class="num">0 to 1</span> on web and mobile (React, Expo, React Native)
+        and stood up the whole AWS backbone behind it: Amplify, DynamoDB and Lambda.
+        To feed it, I built a scraping engine that combines Playwright, LLMs and API reverse engineering
+        to pull messy, unstructured deal data from <strong>50+ retail sites</strong> and sort it into something
+        a person can actually browse.
+      </p>
+      <p>
+        On top of that sits a real-time notification and discovery system that earned a
+        <strong>41% WAU/MAU stickiness</strong> and an average of <strong>14m 50s</strong> per session,
+        which is a long time for a deals app.
+      </p>
+      <p class="takeaway"><span>Owning a product end to end means the interesting problems live between layers: data quality decides whether the UX feels magic or broken.</span></p>
+      <p class="stack">live at <a href="https://lordofsavings.com" target="_blank" rel="noopener">lordofsavings.com</a></p>
+    </article>
+
+    <article class="role rv">
+      <div class="role-head">
+        <h2>Software Engineer <span class="at">@</span> Capital One</h2>
+        <span class="when">may 2023 → feb 2026</span>
+      </div>
+      <p style="margin-top:14px">
+        Led integration design and implementation for the <strong>T-Mobile</strong> and <strong>Discover</strong>
+        credit card programs, together worth roughly <span class="num">$10M a month</span>. I was the technical bridge between frontend,
+        scheduling and fulfillment teams, which meant keeping three roadmaps honest about one shared contract.
+      </p>
+      <p>
+        Beyond launches, I moved two legacy financial microservices from <em>Java/Spring</em> to <em>Go</em> and
+        <em>Python</em>, lifting code coverage by <strong>35%</strong> and cutting production regressions sharply.
+        I also introduced <strong>OpenTelemetry</strong> across payment scheduling and fulfillment, alongside
+        Route 53 and CloudWatch, so on-call could see production health instead of guessing at it.
+      </p>
+      <p class="takeaway"><span>In payments, trust is a feature. Tests, tracing and clear ownership boundaries are what let a team move fast safely.</span></p>
+      <p class="stack">see it in the wild:
+        <a href="https://www.capitalone.com/credit-cards/t-mobile" target="_blank" rel="noopener">t-mobile card</a>,
+        <a href="https://www.capitalone.com/about/capital-one-discover/" target="_blank" rel="noopener">capital one × discover</a>
+      </p>
+    </article>
+
+    <article class="role rv">
+      <div class="role-head">
+        <h2>Software Engineer <span class="at">@</span> MemoryFox</h2>
+        <span class="when">jun 2022 → may 2023</span>
+      </div>
+      <p style="margin-top:14px">
+        Lived mostly in the frontend, roughly <strong>90/10</strong> front to back, building responsive React and SCSS
+        interfaces, then dropped into the PHP/PostgreSQL backend whenever an API endpoint needed tuning.
+        Working closely with product managers and stakeholders to refine user flows helped lift
+        engagement by <strong>20–30%</strong>.
+      </p>
+      <p class="takeaway"><span>The best performance wins came from the seam: understanding the user flow well enough to fix it on either side of the API.</span></p>
+      <p class="stack"><a href="https://www.memoryfox.io" target="_blank" rel="noopener">memoryfox.io</a></p>
+    </article>
+
+    <article class="role rv">
+      <div class="role-head">
+        <h2>Software Engineer Intern <span class="at">@</span> Everest Reinsurance</h2>
+        <span class="when">jun → aug 2021</span>
+      </div>
+      <p style="margin-top:14px">
+        Wrote a Python pipeline on Azure AI Document Intelligence that extracts policy metrics out of PDFs
+        at about <strong>92% parsing accuracy</strong>: my first taste of turning unstructured documents into structured data,
+        a thread that runs straight through my scraping work today.
+      </p>
+    </article>
+  </section>
+
+  <!-- stack -->
+  <section>
+    <div class="label rv"><span><b>02</b> /* what i reach for */</span></div>
+    <pre class="rv" id="stack"><span class="row"><span class="k">const</span> languages <span class="p">=</span> [<span class="s">"Python"</span>, <span class="s">"TypeScript"</span>, <span class="s">"Java"</span>, <span class="s">"Go"</span>, <span class="s">"PHP"</span>, <span class="s">"HTML/CSS"</span>];</span>
+<span class="row"><span class="k">const</span> build <span class="p">=</span> [<span class="s">"React"</span>, <span class="s">"React Native"</span>, <span class="s">"Node.js"</span>, <span class="s">"FastAPI"</span>, <span class="s">"Flask"</span>, <span class="s">"Spring Boot"</span>, <span class="s">"Tailwind"</span>];</span>
+<span class="row"><span class="k">const</span> cloud <span class="p">=</span> [<span class="s">"AWS (Solutions Architect)"</span>, <span class="s">"GCP"</span>, <span class="s">"Terraform"</span>];</span>
+<span class="row"><span class="k">const</span> data <span class="p">=</span> [<span class="s">"PostgreSQL"</span>, <span class="s">"DynamoDB"</span>, <span class="s">"Firebase"</span>, <span class="s">"MongoDB"</span>];</span>
+<span class="row"><span class="k">const</span> talk <span class="p">=</span> [<span class="s">"Kafka"</span>, <span class="s">"GraphQL"</span>, <span class="s">"REST"</span>, <span class="s">"gRPC"</span>];</span>
+<span class="row"><span class="k">const</span> ship <span class="p">=</span> [<span class="s">"GitHub Actions"</span>, <span class="s">"Jenkins"</span>, <span class="s">"Expo CI/CD"</span>, <span class="s">"OpenTelemetry"</span>, <span class="s">"Splunk"</span>, <span class="s">"New Relic"</span>];</span>
+<span class="row"><span class="k">const</span> prove <span class="p">=</span> [<span class="s">"JUnit"</span>, <span class="s">"Vitest"</span>, <span class="s">"pytest"</span>];</span>
+<span class="row"><span class="k">const</span> agents <span class="p">=</span> [<span class="s">"Claude Code"</span>, <span class="s">"Cursor"</span>, <span class="s">"Copilot"</span>, <span class="s">"Ollama"</span>];</span></pre>
+    <p class="rv" style="margin-top:28px">
+      Agentic tools are part of how I work, not a novelty. Claude Code and Cursor compress the time it takes to
+      understand an unfamiliar codebase, plan a refactor and land it, and the tests are what keep that speed honest.
+    </p>
+  </section>
+
+  <!-- education -->
+  <section>
+    <div class="label rv"><span><b>03</b> /* where it started */</span></div>
+    <p class="rv">
+      B.S. in Computer Science from the <strong>University at Buffalo, SUNY</strong>, finished in
+      <span class="num">2023</span> with a <span class="num">3.7</span> GPA. I graduated straight into
+      production work at a bank.
+    </p>
+  </section>
+
+  <!-- contact -->
+  <section>
+    <div class="label rv"><span><b>04</b> /* say hi */</span></div>
+    <p class="contact rv">
+      <span class="k">await</span> <span class="p">connect(</span><br>
+      &nbsp;&nbsp;<a href="mailto:anthony.swe02@gmail.com">anthony.swe02@gmail.com</a><span class="p">,</span><br>
+      &nbsp;&nbsp;<a href="https://github.com/m-r-q-w-e-r-t-y" target="_blank" rel="noopener">github.com/m-r-q-w-e-r-t-y</a><span class="p">,</span><br>
+      &nbsp;&nbsp;<a href="https://linkedin.com/in/anthony00" target="_blank" rel="noopener">linkedin.com/in/anthony00</a><br>
+      <span class="p">);</span>
+    </p>
+  </section>
+
+</main>
+
+<div id="status" aria-hidden="true"><b>main</b> · Ln <span id="ln">1</span> · UTF-8</div>
+
+<script>
+(function () {
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // reveal on scroll
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      e.target.classList.add('in');
+      if (e.target.id === 'stack') {
+        e.target.querySelectorAll('.row').forEach(function (r, i) { r.style.transitionDelay = (i * 80) + 'ms'; });
+      }
+      io.unobserve(e.target);
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -6% 0px' });
+  document.querySelectorAll('.rv').forEach(function (el) { io.observe(el); });
+
+  // scroll progress + fake line number
+  var bar = document.getElementById('progress');
+  var ln = document.getElementById('ln');
+  var ticking = false;
+  function update() {
+    var h = document.documentElement.scrollHeight - innerHeight;
+    var p = h > 0 ? scrollY / h : 0;
+    bar.style.transform = 'scaleX(' + p + ')';
+    ln.textContent = Math.max(1, Math.round(p * 142) + 1);
+    ticking = false;
+  }
+  addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+  update();
+
+  // name: type-in on load, glyph scramble on hover
+  var el = document.getElementById('name');
+  var text = el.dataset.text;
+  var glyphs = '{}[]<>/=+-_;:#$%&*';
+  function scramble(duration) {
+    var start = performance.now();
+    (function frame(now) {
+      var t = Math.min(1, (now - start) / duration);
+      var settled = Math.floor(t * text.length);
+      var out = '';
+      for (var i = 0; i < text.length; i++) {
+        out += (i < settled || text[i] === ' ') ? text[i] : glyphs[Math.floor(Math.random() * glyphs.length)];
+      }
+      el.textContent = out;
+      if (t < 1) requestAnimationFrame(frame); else el.textContent = text;
+    })(start);
+  }
+  if (!reduce) {
+    el.textContent = '';
+    var i = 0;
+    (function type() {
+      el.textContent = text.slice(0, ++i);
+      if (i < text.length) setTimeout(type, 55 + Math.random() * 50);
+    })();
+    var busy = false;
+    el.addEventListener('mouseenter', function () {
+      if (busy || el.textContent !== text) return;
+      busy = true; scramble(500); setTimeout(function () { busy = false; }, 520);
+    });
+  }
+})();
+</script>
+</body>
+</html>
